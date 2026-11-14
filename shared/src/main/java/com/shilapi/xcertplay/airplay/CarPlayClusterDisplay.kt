@@ -16,11 +16,13 @@ object CarPlayClusterDisplay {
      * On the tested car the iPhone glass turn card needed 0–5 kbit/s against 0.3–4 Mbit/s for the map.
      * MAP_WITH_CUSTOM_CARD asks for the map stream so DiPlay can draw a movable card on top.
      */
-    enum class Content(val url: String) {
+    enum class Content(val url: String?) {
         MAP(MAP_URL),
         TURN_CARD("maps:/car/instrumentcluster/instructioncard"),
         INSTRUMENTS("maps:/car/instrumentcluster"),
         MAP_WITH_CUSTOM_CARD(MAP_URL),
+        /** No initialURL — lets CarPlay decide the cluster content (TBT when navigating). */
+        NONE(null),
     }
 
     fun usesCustomTurnCard(content: Content): Boolean = content == Content.MAP_WITH_CUSTOM_CARD

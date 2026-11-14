@@ -13,7 +13,7 @@ import org.robolectric.annotation.Config
 @RunWith(RobolectricTestRunner::class)
 @Config(sdk = [29], manifest = Config.NONE)
 class ClusterContentTest {
-    private fun session(initialUrl: String, onTeardown: (AirPlaySession) -> Unit = {}): AirPlaySession = AirPlaySession(
+    private fun session(initialUrl: String?, onTeardown: (AirPlaySession) -> Unit = {}): AirPlaySession = AirPlaySession(
         socket = Socket(),
         config = AirPlayConfig(deviceName = "test", deviceId = "02:00:00:00:00:02", btMac = "02:00:00:00:00:01",
             sourceVersion = "1", main = AirPlayDisplayConfig(widthPixels = 800, heightPixels = 480),
@@ -38,7 +38,7 @@ class ClusterContentTest {
     }
 
     @Test fun aFailedShowUiMustNotClaimThatATurnCardHasBecomeAMap() {
-        val initial = CarPlayClusterDisplay.Content.TURN_CARD.url
+        val initial = CarPlayClusterDisplay.Content.TURN_CARD.url!!
         val session = session(initial)
         try {
             setup(session)
@@ -51,7 +51,7 @@ class ClusterContentTest {
         val session = session(CarPlayClusterDisplay.MAP_URL)
         try {
             setup(session)
-            assertTrue(session.setClusterUrl(CarPlayClusterDisplay.Content.TURN_CARD.url, send = false))
+            assertTrue(session.setClusterUrl(CarPlayClusterDisplay.Content.TURN_CARD.url!!, send = false))
             assertEquals(CarPlayClusterDisplay.MAP_URL, session.clusterUrl())
             teardown(session)
             assertEquals(0, session.clusterStream)
@@ -112,7 +112,7 @@ class ClusterContentTest {
             setup(session)
             val event = eventReady(session)
             assertTrue(session.setClusterUiShown(false))
-            assertTrue(session.setClusterUrl(CarPlayClusterDisplay.Content.TURN_CARD.url, send = false))
+            assertTrue(session.setClusterUrl(CarPlayClusterDisplay.Content.TURN_CARD.url!!, send = false))
             readyAfterSetup(session) // A ready-channel notification must not undo a pause.
             assertEquals(CarPlayClusterDisplay.MAP_URL, session.clusterUrl())
             assertEquals(1, event.writes)
@@ -139,7 +139,7 @@ class ClusterContentTest {
         try {
             setup(session)
             eventReady(session)
-            assertTrue(session.setClusterUrl(CarPlayClusterDisplay.Content.TURN_CARD.url, send = true))
+            assertTrue(session.setClusterUrl(CarPlayClusterDisplay.Content.TURN_CARD.url!!, send = true))
             teardown(session)
             assertNull(session.clusterContentRoute())
             setup(session)
@@ -169,7 +169,7 @@ class ClusterContentTest {
         session.close()
         assertEquals(0, session.clusterStream)
         assertNull(session.clusterContentRoute())
-        assertFalse(session.setClusterUrl(CarPlayClusterDisplay.Content.TURN_CARD.url, send = false))
+        assertFalse(session.setClusterUrl(CarPlayClusterDisplay.Content.TURN_CARD.url!!, send = false))
         assertEquals(0, event.writes)
     }
 

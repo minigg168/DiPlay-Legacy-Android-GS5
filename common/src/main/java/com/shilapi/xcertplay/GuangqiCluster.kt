@@ -86,13 +86,17 @@ internal object GuangqiCluster {
                 used += "mm=$mm"
             }
             props(URL).trim().takeIf { it.isNotEmpty() }?.let { value ->
-                val url = when (value) {
-                    "map" -> "maps:/car/instrumentcluster/map"
-                    "card" -> "maps:/car/instrumentcluster/instructioncard"
-                    "instruments" -> "maps:/car/instrumentcluster"
-                    else -> value.takeIf { it.startsWith("maps:/") }
+                if (value == "none") {
+                    out = out.copy(initialUrl = null); used += "url=none"
+                } else {
+                    val url = when (value) {
+                        "map" -> "maps:/car/instrumentcluster/map"
+                        "card" -> "maps:/car/instrumentcluster/instructioncard"
+                        "instruments" -> "maps:/car/instrumentcluster"
+                        else -> value.takeIf { it.startsWith("maps:/") }
+                    }
+                    if (url != null) { out = out.copy(initialUrl = url); used += "url=$url" }
                 }
-                if (url != null) { out = out.copy(initialUrl = url); used += "url=$url" }
             }
             props(SAFE).split(',').map { it.trim().toIntOrNull() }.takeIf { it.size == 4 && it.all { v -> v != null && v >= 0 } }
                 ?.let { (l, t, r, b) ->

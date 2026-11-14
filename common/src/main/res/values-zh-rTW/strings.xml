@@ -433,6 +433,7 @@
     <string name="dashboard_content_turn_card">轉向提示卡</string>
     <string name="dashboard_content_map_with_turn_card">地圖和轉向提示卡</string>
     <string name="dashboard_content_map_with_custom_turn_card">地圖和自訂轉向卡</string>
+    <string name="dashboard_content_none">不設初始URL（實驗性）</string>
     <string name="turn_card_size">轉向提示卡大小</string>
     <string name="turn_card_horizontal">轉向提示卡 · 水平位置</string>
     <string name="turn_card_vertical">轉向提示卡 · 垂直位置</string>
