@@ -1850,22 +1850,19 @@ class DiPlayActivity : ComponentActivity() {
                             getString(R.string.dashboard_content_turn_card),
                             getString(R.string.dashboard_content_map_with_turn_card),
                             getString(R.string.dashboard_content_map_with_custom_turn_card),
-                            getString(R.string.dashboard_content_none),
                         ), contents.indexOf(content).coerceAtLeast(0), reconnects = false) {
                             val next = contents[it]
                             val request = ++clusterContentRequestVersion
                             AirPlayPersistence.saveClusterContent(this, next)
                             render()
                             if (content.url != next.url) {
-                                // NONE (null URL) changes /info, so it always needs a reconnect.
                                 // The iPhone's own contents switch live. DiPlay's card over the map, and the
                                 // DiLink 5.1 layout (always the map), are set up at connection, so they reconnect.
                                 val controller = CarPlayBackgroundSession.snapshot()?.controller
-                                if (next.url == null || content.url == null ||
-                                    customCard || CarPlayClusterDisplay.usesCustomTurnCard(next) ||
+                                if (customCard || CarPlayClusterDisplay.usesCustomTurnCard(next) ||
                                     DiLink51ClusterLayout.supported() || controller == null) {
                                     markReconnectNeeded()
-                                } else controller.showDashboardContent(next.url!!) { applied ->
+                                } else controller.showDashboardContent(next.url) { applied ->
                                     runOnUiThread {
                                         if (!applied && request == clusterContentRequestVersion &&
                                             !isFinishing && !isDestroyed &&

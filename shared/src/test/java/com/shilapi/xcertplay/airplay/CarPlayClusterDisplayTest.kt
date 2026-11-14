@@ -1,7 +1,6 @@
 package com.shilapi.xcertplay.airplay
 
 import org.junit.Assert.assertEquals
-import org.junit.Assert.assertNull
 import org.junit.Assert.assertTrue
 import org.junit.Test
 
@@ -60,12 +59,9 @@ class CarPlayClusterDisplayTest {
                 "maps:/car/instrumentcluster/instructioncard",
                 "maps:/car/instrumentcluster",
                 "maps:/car/instrumentcluster/map",
-                null,
             ),
             CarPlayClusterDisplay.Content.entries.map { it.url },
         )
-        val none = CarPlayClusterDisplay.config(1920, 720, content = CarPlayClusterDisplay.Content.NONE)
-        assertNull(none.initialUrl)
     }
 
     @Test
